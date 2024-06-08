@@ -43,8 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let title = document.getElementById("title").value;
     let author = document.getElementById("author").value;
     let pages = document.getElementById("pageCount").value;
-    let status = document.getElementById("status").value;
 
+    let statusCheckbox = document.getElementById("status");
+    let status = statusCheckbox.checked ? 'read' : 'not read';
 
     let newBook = new Book(title, author, pages, status)
 
@@ -58,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function listBooks() {
 
     const parent = document.querySelector(".book-container");
-    
     
     parent.innerHTML = '';   
     
