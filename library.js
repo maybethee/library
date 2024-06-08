@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     this.author = author;
     this.pageCount = pageCount;
     this.status = status;
-    };  
+  };  
         
   function addBookToLibrary() {
     // do stuff here
@@ -57,24 +57,39 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   function listBooks() {
-
     const parent = document.querySelector(".book-container");
     
-    parent.innerHTML = '';   
-    
-    for (let book in myLibrary) {
-      const newCard = document.createElement("div");
+    // clear book container
+    parent.innerHTML = '';
 
+    // set a book Id index to associate with each book
+    for (let bookId = 0; bookId < myLibrary.length; bookId++) {
+
+      const newCard = document.createElement("div");
       newCard.setAttribute("class", "book");
+      newCard.setAttribute("id", `book${bookId}`);
       
-      let currentBook = myLibrary[book];
-      
-      newCard.innerHTML = `Title: ${currentBook.title}<br />Author: ${currentBook.author}<br />Pages: ${currentBook.pageCount}<br />Status: ${currentBook.status}`
+      let currentBook = myLibrary[bookId];
+
+      newCard.innerHTML = `Title: ${currentBook.title}<br />Author: ${currentBook.author}<br />Pages: ${currentBook.pageCount}<br />Status: ${currentBook.status}`;
+
+      // handles deleting added books
+      const deleteBtn = document.createElement("button")
+      deleteBtn.innerHTML = "Delete";
+      deleteBtn.addEventListener("click", function() {
+        myLibrary.splice(bookId, 1);
+
+        // remove DOM element
+        newCard.remove();
+
+        // refresh book list display
+        listBooks();
+      });
 
       parent.appendChild(newCard);
+      newCard.appendChild(deleteBtn)
     };
   };
-
-  listBooks()
+  listBooks();
 });
 
