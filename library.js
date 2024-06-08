@@ -1,53 +1,80 @@
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  console.log("Hello World")
+  const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkein', 310, 'read');
+  const myLibrary = [theHobbit];  
 
 
-  const myLibrary = [];
+  const showButton = document.getElementById("showDialog");
+  const newBookDialog = document.getElementById("newBookDialog");
+  const outputBox = document.querySelector(".book-container");
+  const confirmBtn = newBookDialog.querySelector("#confirmBtn")
+
+
+  showButton.addEventListener("click", () => {
+    newBookDialog.showModal();
+  });
+
+  newBookDialog.addEventListener("close", (e) => {
+    outputBox.value = 
+      newBookDialog.returnValue === "default"
+        ? "No return value."
+        : `ReturnValue: ${newBookDialog.returnValue}.`;
+  });
+
+
+  confirmBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    addBookToLibrary()
   
+    newBookDialog.close();
+  });
+
   function Book(title, author, pageCount, status) {
     this.title = title;
     this.author = author;
     this.pageCount = pageCount;
     this.status = status;
-  };
-      
-  const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkein', 310, 'read');
-  
-  myLibrary.push(theHobbit);
-      
+    };  
+        
   function addBookToLibrary() {
     // do stuff here
-      let title = prompt("enter a new book title")
-      let author = prompt("who wrote that book?")
-      let pages = prompt("how long is the book (in pages)")
-      let status = prompt("have you finished the book? (read/not read yet)")
-    
-    // console.log(title)
-  
-    newBook = new Book(title, author, pages, status)
-  
-    myLibrary.push(newBook)
+    let title = document.getElementById("title").value;
+    let author = document.getElementById("author").value;
+    let pages = document.getElementById("pageCount").value;
+    let status = document.getElementById("status").value;
+
+
+    let newBook = new Book(title, author, pages, status)
+
+    console.log(newBook);
+
+    myLibrary.push(newBook);
+
+    listBooks()
   };
-  
-  addBookToLibrary()
-  
-  for (let book in myLibrary) {
-  
-    const newCard = document.createElement("div");
-    const parent = document.querySelector("#book-container");
+
+  function listBooks() {
+
+    const parent = document.querySelector(".book-container");
     
-    let currentBook = myLibrary[book];
+    
+    parent.innerHTML = '';   
+    
+    for (let book in myLibrary) {
+      const newCard = document.createElement("div");
 
-    newCard.innerHTML = currentBook.title + " by " + currentBook.author + ", " + currentBook.pageCount + " pages, " + currentBook.status;
+      newCard.setAttribute("class", "book");
+      
+      let currentBook = myLibrary[book];
+      
+      newCard.innerHTML = `Title: ${currentBook.title}<br />Author: ${currentBook.author}<br />Pages: ${currentBook.pageCount}<br />Status: ${currentBook.status}`
 
-    parent.appendChild(newCard);
-  
-    // console.log(myLibrary[book])
+      parent.appendChild(newCard);
+    };
   };
-  
-  
 
-})
+  listBooks()
+});
 
