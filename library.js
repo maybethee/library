@@ -1,15 +1,28 @@
 
 document.addEventListener('DOMContentLoaded', function() {
+  
+  function Book(title, author, pageCount, status) {
+    this.title = title;
+    this.author = author;
+    this.pageCount = pageCount;
+    this.status = status;
+  };  
+
+  Book.prototype.details = function() {
+    return `Title: ${this.title}<br />Author: ${this.author}<br />Pages: ${this.pageCount}<br />Status: ${this.status}<br />`;
+  };
+
+  Book.prototype.toggleStatus = function() {
+    this.status = this.status === 'read' ? 'not read' : 'read';
+  };
 
   const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkein', 310, 'read');
   const myLibrary = [theHobbit];  
-
 
   const showButton = document.getElementById("showDialog");
   const newBookDialog = document.getElementById("newBookDialog");
   const outputBox = document.querySelector(".book-container");
   const confirmBtn = newBookDialog.querySelector("#confirmBtn")
-
 
   showButton.addEventListener("click", () => {
     newBookDialog.showModal();
@@ -22,21 +35,14 @@ document.addEventListener('DOMContentLoaded', function() {
         : `ReturnValue: ${newBookDialog.returnValue}.`;
   });
 
-
   confirmBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
-    addBookToLibrary()
+    addBookToLibrary();
   
     newBookDialog.close();
   });
 
-  function Book(title, author, pageCount, status) {
-    this.title = title;
-    this.author = author;
-    this.pageCount = pageCount;
-    this.status = status;
-  };  
         
   function addBookToLibrary() {
     // do stuff here
@@ -53,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     myLibrary.push(newBook);
 
-    listBooks()
+    listBooks();
   };
 
   function listBooks() {
@@ -71,10 +77,11 @@ document.addEventListener('DOMContentLoaded', function() {
       
       let currentBook = myLibrary[bookId];
 
-      newCard.innerHTML = `Title: ${currentBook.title}<br />Author: ${currentBook.author}<br />Pages: ${currentBook.pageCount}<br />Status: ${currentBook.status}`;
+      newCard.innerHTML = currentBook.details()
 
       // handles deleting added books
-      const deleteBtn = document.createElement("button")
+      const deleteBtn = document.createElement("button");
+      deleteBtn.setAttribute("type", "button");
       deleteBtn.innerHTML = "Delete";
       deleteBtn.addEventListener("click", function() {
         myLibrary.splice(bookId, 1);
@@ -86,8 +93,20 @@ document.addEventListener('DOMContentLoaded', function() {
         listBooks();
       });
 
+      // handles toggling read status
+      const toggleStatusBtn = document.createElement("button");
+      toggleStatusBtn.setAttribute("type", "button");
+      toggleStatusBtn.innerHTML = 'Toggle Status';
+      toggleStatusBtn.addEventListener("click", function() {
+        currentBook.toggleStatus();
+        newCard.innerHTML = 
+        console.log(currentBook.status);
+        listBooks();
+      })
+
       parent.appendChild(newCard);
-      newCard.appendChild(deleteBtn)
+      newCard.appendChild(deleteBtn);
+      newCard.appendChild(toggleStatusBtn);
     };
   };
   listBooks();
