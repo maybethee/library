@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const newBookDialog = document.getElementById("newBookDialog");
   const outputBox = document.querySelector(".book-container");
   const confirmBtn = newBookDialog.querySelector("#confirmBtn")
-
+  
   showButton.addEventListener("click", () => {
     newBookDialog.showModal();
   });
@@ -33,6 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
       newBookDialog.returnValue === "default"
         ? "No return value."
         : `ReturnValue: ${newBookDialog.returnValue}.`;
+
+        // clear modal fields
+        document.getElementById("title").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("pageCount").value = "";
+        document.getElementById("status").checked = false;
   });
 
   confirmBtn.addEventListener("click", (event) => {
@@ -45,7 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         
   function addBookToLibrary() {
-    // do stuff here
     let title = document.getElementById("title").value;
     let author = document.getElementById("author").value;
     let pages = document.getElementById("pageCount").value;

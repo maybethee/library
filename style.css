@@ -60,6 +60,26 @@ button#showDialog {
   padding: 10px 20px 10px 20px
 }
 
+dialog[open] {
+  transform: translate(-50%, -50%);
+}
+
+dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -150%);
+  transition: transform 0.3s ease-in-out;
+  margin: 0;
+  padding: 20px;
+}
+
+@starting-style {
+  dialog[open] {
+    transform: translate(-50%, -150%);
+  }
+}
+
 h2 {
   font-size: large;
   font-weight: 800;
