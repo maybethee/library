@@ -120,7 +120,6 @@ button:hover {
   background-color: #A387E0;
   color: black;
   cursor: pointer;
-  /* border: 2px solid lime; */
   border-radius: 5px;
   transform: scale(1.05);
 }

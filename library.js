@@ -1,86 +1,57 @@
-
-document.addEventListener('DOMContentLoaded', function() {
-  
-  function Book(title, author, pageCount, status) {
+class Book {
+  constructor(title, author, pageCount, status) {
     this.title = title;
     this.author = author;
     this.pageCount = pageCount;
     this.status = status;
-  };  
+  }
 
-  Book.prototype.details = function() {
+  details() {
     return `Title: ${this.title}<br />Author: ${this.author}<br />Pages: ${this.pageCount}<br />Status: ${this.status}<br />`;
-  };
+  }
 
-  Book.prototype.toggleStatus = function() {
+  toggleStatus() {
     this.status = this.status === 'read' ? 'not read' : 'read';
-  };
+  }
+}
 
-  const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkein', 310, 'read');
-  const myLibrary = [theHobbit];  
+class Library {
+  constructor() {
+    this.books = [theHobbit]
+  }
 
-  const showButton = document.getElementById("showDialog");
-  const newBookDialog = document.getElementById("newBookDialog");
-  const outputBox = document.querySelector(".book-container");
-  const confirmBtn = newBookDialog.querySelector("#confirmBtn")
-  
-  showButton.addEventListener("click", () => {
-    newBookDialog.showModal();
-  });
+  addBook() {
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const pages = document.getElementById("pageCount").value;
 
-  newBookDialog.addEventListener("close", (e) => {
-    outputBox.value = 
-      newBookDialog.returnValue === "default"
-        ? "No return value."
-        : `ReturnValue: ${newBookDialog.returnValue}.`;
+    const statusCheckbox = document.getElementById("status");
+    const status = statusCheckbox.checked ? 'read' : 'not read';
 
-        // clear modal fields
-        document.getElementById("title").value = "";
-        document.getElementById("author").value = "";
-        document.getElementById("pageCount").value = "";
-        document.getElementById("status").checked = false;
-  });
+    const newBook = new Book(title, author, pages, status)
 
-  confirmBtn.addEventListener("click", (event) => {
-    event.preventDefault();
+    this.books.push(newBook)
 
-    addBookToLibrary();
-  
-    newBookDialog.close();
-  });
+      
+    // should be a private method?
+    this.listBooks();
+  }
 
-        
-  function addBookToLibrary() {
-    let title = document.getElementById("title").value;
-    let author = document.getElementById("author").value;
-    let pages = document.getElementById("pageCount").value;
-
-    let statusCheckbox = document.getElementById("status");
-    let status = statusCheckbox.checked ? 'read' : 'not read';
-
-    let newBook = new Book(title, author, pages, status)
-
-    console.log(newBook);
-
-    myLibrary.push(newBook);
-
-    listBooks();
-  };
-
-  function listBooks() {
+// should be a private method?
+  listBooks() {
     const parent = document.querySelector(".book-container");
     
     // clear book container
     parent.innerHTML = '';
 
     // set a book Id index to associate with each book
-    for (let bookId = 0; bookId < myLibrary.length; bookId++) {
+    for (let bookId = 0; bookId < this.books.length; bookId++) {
 
       const newCard = document.createElement("div");
       newCard.setAttribute("class", "book");
       newCard.setAttribute("id", `book${bookId}`);
       
-      let currentBook = myLibrary[bookId];
+      const currentBook = this.books[bookId];
 
       newCard.innerHTML = currentBook.details()
 
@@ -89,13 +60,14 @@ document.addEventListener('DOMContentLoaded', function() {
       deleteBtn.setAttribute("type", "button");
       deleteBtn.innerHTML = "Delete";
       deleteBtn.addEventListener("click", function() {
-        myLibrary.splice(bookId, 1);
+        // const bookId = myLibrary.books.indexOf(currentBook);
+        myLibrary.books.splice(bookId, 1);
 
         // remove DOM element
         newCard.remove();
 
         // refresh book list display
-        listBooks();
+        myLibrary.listBooks();
       });
 
       // handles toggling read status
@@ -106,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentBook.toggleStatus();
         newCard.innerHTML = 
         console.log(currentBook.status);
-        listBooks();
+        myLibrary.listBooks();
       })
 
       parent.appendChild(newCard);
@@ -114,6 +86,38 @@ document.addEventListener('DOMContentLoaded', function() {
       newCard.appendChild(toggleStatusBtn);
     };
   };
-  listBooks();
+}
+
+const theHobbit = new Book('The Hobbit', 'J.R.R. Tolkein', 310, 'read');
+const myLibrary = new Library();
+const showButton = document.getElementById("showDialog");
+const newBookDialog = document.getElementById("newBookDialog");
+const outputBox = document.querySelector(".book-container");
+const confirmBtn = newBookDialog.querySelector("#confirmBtn")
+
+showButton.addEventListener("click", () => {
+  newBookDialog.showModal();
 });
 
+newBookDialog.addEventListener("close", (e) => {
+  outputBox.value = 
+    newBookDialog.returnValue === "default"
+      ? "No return value."
+      : `ReturnValue: ${newBookDialog.returnValue}.`;
+
+      // clear modal fields
+      document.getElementById("title").value = "";
+      document.getElementById("author").value = "";
+      document.getElementById("pageCount").value = "";
+      document.getElementById("status").checked = false;
+});
+
+confirmBtn.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  myLibrary.addBook();
+
+  newBookDialog.close();
+});
+
+myLibrary.listBooks();
