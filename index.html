@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <title>Document</title>
-</head>
-<body>
-  <h1>
-    Library
-
-    <p>
-      <button id="showDialog">New Book</button>
-    </p>
-
-  </h1>
-
-  <dialog id="newBookDialog">
-    <form>
-      <p>
-        <label>
-          Book Title:
-          <input type="text" id="title" name="title" minlength="1" />
-        </label>
-      </p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>
+      Library
 
       <p>
-        <label>
-          Author:
-          <input type="text" id="author" name="author" minlength="1" />
-        </label>
+        <button id="showDialog">New Book</button>
       </p>
+    </h1>
 
-      <p>
-        <label>
-          Number of Pages:
-          <input type="number" id="pageCount" name="pageCount" />
-        </label>
-      </p>
+    <dialog id="newBookDialog">
+      <form id="bookForm">
+        <p>
+          <label>
+            Book Title:
+            <input type="text" id="title" name="title" required />
+          </label>
+        </p>
 
-      <p>
-        <label>
-          Completed?
-          <input type="checkbox" id="status" name="status" />
-        </label>
-      </p>
+        <p>
+          <label>
+            Author:
+            <input type="text" id="author" name="author" required />
+          </label>
+        </p>
 
+        <p>
+          <label>
+            Number of Pages:
+            <input type="number" id="pageCount" name="pageCount" required />
+          </label>
+        </p>
 
-      <div>
-        <button value="cancel" formmethod="dialog">Cancel</button>
-        <button id="confirmBtn" value="default">Add</button>
-      </div>
-    </form>
-  </dialog>
-  
-  <h2>Books:</h2>
+        <p>
+          <label>
+            Completed?
+            <input type="checkbox" id="status" name="status" />
+          </label>
+        </p>
 
-  <div class="book-container">
-  </div>
-  <script src="library.js"></script>
+        <div>
+          <button value="cancel" formmethod="dialog">Cancel</button>
+          <button id="confirmBtn" value="default">Add</button>
+        </div>
+      </form>
+    </dialog>
 
-</body>
+    <h2>Books:</h2>
+
+    <div class="book-container"></div>
+    <script src="library.js"></script>
+  </body>
 </html>
